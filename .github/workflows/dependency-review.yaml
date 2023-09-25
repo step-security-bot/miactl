@@ -8,6 +8,9 @@ on:
     - docs/**
     - examples/**
 
+permissions:
+  contents: read
+
 jobs:
   dependency-review:
     name: Dependencies Review
@@ -16,12 +19,17 @@ jobs:
       contents: read
       pull-requests: write
     steps:
+    - name: Harden Runner
+      uses: step-security/harden-runner@8ca2b8b2ece13480cda6dacd3511b49857a23c09 # v2.5.1
+      with:
+        egress-policy: audit
+
     - name: Checkout Repository
-      uses: actions/checkout@v4
+      uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.1.0
       with:
         show-progress: false
     - name: Dependency Review
-      uses: actions/dependency-review-action@v3
+      uses: actions/dependency-review-action@6c5ccdad469c9f8a2996bfecaec55a631a347034 # v3.1.0
       with:
         fail-on-scope: runtime,development,unknown
         comment-summary-in-pr: on-failure
